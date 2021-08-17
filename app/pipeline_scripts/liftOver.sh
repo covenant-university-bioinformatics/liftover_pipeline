@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 ### This Script is to preprocess user input file.
@@ -8,10 +8,8 @@
 ## maintainer Dare
 ## maintainer
 ## To run it ./liftOver.sh gwas_summary NCBI_build{38/36}
-#/mnt/c/Users/daref/Downloads/intelligence.txt
-#/mnt/c/Users/daref/Downloads/liftover_results
-#./liftOver.sh /mnt/c/Users/daref/Downloads/celiac.txt /mnt/c/Users/daref/Downloads/liftover_results/celiac 38
-bin_dir="/mnt/c/Users/daref/Downloads/liftover_tool"
+
+bin_dir="/local/datasets/liftover"
 
 ##### Parameters
 gwas_summary=$1;
@@ -33,8 +31,8 @@ liftOver_output=$outputdir/liftedOver.txt; #output file name
     ####5th column is chr (orginal numerical value )
 
 #should be in input directory
-awk '{print "chr"$1"\t"$2"\t"($2+1)"\t"$3"\t"$1}' $gwas_summary >  $bin_dir/dbsnp.bed ## rearranges the columns
-sed -i '1d' $bin_dir/dbsnp.bed   #remove header
+awk '{print "chr"$1"\t"$2"\t"($2+1)"\t"$3"\t"$1}' $gwas_summary >  $outputdir/dbsnp.bed ## rearranges the columns
+sed -i '1d' $outputdir/dbsnp.bed   #remove header
 
 
 ############ liftOver 38,
@@ -44,7 +42,7 @@ then
 ## Do liftOver from NCBI 38 (hg38) to hg 19 (NCBI 37)
 ## We safe liftOver binnary file in the root folder
 #append to outputdir output-lifted.bed unlifted.bed
-$bin_dir/liftOver dbsnp.bed $bin_dir/hg38ToHg19.over.chain.gz $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
+$bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg38ToHg19.over.chain.gz $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
 
 fi
 
@@ -53,7 +51,7 @@ then
 ## Do liftOver  NCBI 36 (hg18) to hg 19 (NCBI 37)
 #change liftoverdata to bin_dir
 #append output dir
-$bin_dir/liftOver dbsnp.bed $bin_dir/hg18ToHg19.over.chain.gz   $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
+$bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg18ToHg19.over.chain.gz   $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
 
 fi
 
