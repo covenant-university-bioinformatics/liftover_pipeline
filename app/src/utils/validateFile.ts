@@ -261,18 +261,26 @@ export function writeLiftoverFile(
   let lineCounter = 0;
 
   readInterface.on('line', function (line) {
-    if (lineCounter !== 0) {
-      let lines = line.replace(/(\r\n|\n|\r)/gm, '');
-      let lines_strings = lines.split(delimiter);
-      const newFileDelim = '\t';
-      const columnNumbers = range(0, lines_strings.length);
-      columnNumbers.push(
-        objectColumns.chr,
-        objectColumns.pos,
-        objectColumns.marker_name,
-      );
-      const remCols = Array.from(new Set(columnNumbers));
+    let lines = line.replace(/(\r\n|\n|\r)/gm, '');
+    let lines_strings = lines.split(delimiter);
 
+    const newFileDelim = '\t';
+    const columnNumbers = range(0, lines_strings.length);
+    const main = [
+      objectColumns.chr,
+      objectColumns.pos,
+      objectColumns.marker_name,
+    ];
+
+    const remCols = columnNumbers.filter(x => !main.includes(x));
+
+    if (lineCounter === 0) {
+      stream.write(
+        `chr${delimiter}pos${delimiter}rsid${delimiter}${remCols
+          .map((value) => lines_strings[value])
+          .join(newFileDelim)}\n`,
+      );
+    } else {
       stream.write(
         `${lines_strings[objectColumns.chr].replace('chr', '')}${newFileDelim}${
           lines_strings[objectColumns.pos]

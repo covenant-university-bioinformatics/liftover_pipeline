@@ -118,6 +118,9 @@ export class JobsService {
           status: 1,
           job_name: 1,
           createdAt: 1,
+          unliftedFile: 1,
+          outputFile: 1,
+
         },
       },
       {

@@ -88,7 +88,7 @@ environment:
     valueFrom:
       secretKeyRef:
         name: mongo-secret
-        key: mongo-annot-db
+        key: mongo-liftover-db
   - name: MONGODB_PODNAME
     value: pgwas-mongo
 
@@ -110,12 +110,9 @@ volumes:
   internal:
     enabled: true
     hostpath:
-      - name: humandb
-        path: /run/desktop/mnt/host/c/Users/daref/Downloads/annovar/
+      - name: liftover
+        path: /run/desktop/mnt/host/c/Users/daref/Downloads/liftover_tool/
         mountPath: /local/datasets
-      - name: disgenet
-        path: /run/desktop/mnt/host/c/Users/daref/Downloads/disgenet/
-        mountPath: /local/disgenet
   network:
     enabled: false
     nfs:
@@ -146,10 +143,10 @@ ingress:
 ##
 resources:
   limits:
-    cpu: 2
-    memory: 4000Mi
+    cpu: 1
+    memory: 1000Mi
   requests:
-    cpu: 2000m
-    memory: 4000Mi
+    cpu: 1000m
+    memory: 1000Mi
 
 enableInitContainers: false

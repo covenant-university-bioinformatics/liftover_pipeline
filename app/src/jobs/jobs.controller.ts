@@ -118,13 +118,9 @@ export class JobsController {
 
     //call service
     return await this.jobsService.create(createJobDto, jobUID, filename, user);
+
   }
 
-  // @Get()
-  // findAll(@Res() response) {
-  //   console.log('Executed');
-  //   response.status(200).json(response.advancedResults);
-  // }
 
   @Get()
   findAll(@Query(ValidationPipe) jobsDto: GetJobsDto, @GetUser() user) {
