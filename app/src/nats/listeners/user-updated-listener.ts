@@ -7,7 +7,7 @@ import { UserUpdatedEvent } from '../events/user-updated.event';
 
 @Injectable()
 export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
-  queueGroupName = 'jobs-service';
+  queueGroupName = 'liftover-jobs-service';
   readonly subject: Subjects.UserUpdated = Subjects.UserUpdated;
 
   @Inject(AuthService)

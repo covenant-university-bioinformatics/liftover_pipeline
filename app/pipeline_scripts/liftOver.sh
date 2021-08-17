@@ -9,7 +9,7 @@
 ## maintainer
 ## To run it ./liftOver.sh gwas_summary NCBI_build{38/36}
 
-bin_dir="/local/datasets/liftover"
+bin_dir="/local/datasets"
 
 ##### Parameters
 gwas_summary=$1;
@@ -37,19 +37,23 @@ sed -i '1d' $outputdir/dbsnp.bed   #remove header
 
 ############ liftOver 38,
 
-if [[ $NCBI_build -eq 38 ]];
+if [[ "$NCBI_build" == "38" ]]
 then
 ## Do liftOver from NCBI 38 (hg38) to hg 19 (NCBI 37)
 ## We safe liftOver binnary file in the root folder
 #append to outputdir output-lifted.bed unlifted.bed
+echo "Here"
+echo $NCBI_build
 $bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg38ToHg19.over.chain.gz $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
 
 fi
 
-if [[ $NCBI_build -eq 36 ]];
+if [[ "$NCBI_build" == "36" ]]
 then
 ## Do liftOver  NCBI 36 (hg18) to hg 19 (NCBI 37)
 #change liftoverdata to bin_dir
+echo "Here 2"
+echo $NCBI_build
 #append output dir
 $bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg18ToHg19.over.chain.gz   $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
 

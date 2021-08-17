@@ -6,24 +6,10 @@ WORKDIR /app
 
 COPY package.json ./
 
-#COPY yarn.lock ./
-
-#RUN yarn add @nestjs/cli --verbose
-
-RUN yarn install
+RUN npm install
 
 COPY ./ ./
 
-RUN chmod 775 pipeline_scripts/annotation_script-1.sh
-RUN chmod 775 pipeline_scripts/disgenet_script.R
+RUN chmod 775 pipeline_scripts/liftOver.sh
 
-#install R and packages
-#RUN apt update
-#RUN apt-get install -y r-base
-
-#RUN apt-get install -y -qq r-cran-ggplot2
-
-#RUN R -e "install.packages(c('ggplot2'),dependencies=TRUE,repos='http://cran.rstudio.com/')"
-
-#RUN yarn run build
-CMD [ "yarn", "run", "start:dev" ]
+CMD [ "npm", "run", "start:dev" ]

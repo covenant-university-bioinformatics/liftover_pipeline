@@ -17,7 +17,7 @@ image: skafoldcfg
 imageConfig:
   repository:
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 #command: ['echo pre-install Job Pod is Running']
 
@@ -88,7 +88,7 @@ environment:
     valueFrom:
       secretKeyRef:
         name: mongo-secret
-        key: mongo-annot-db
+        key: mongo-liftover-db
   - name: MONGODB_PODNAME
     value: pgwas-mongo
 
@@ -110,9 +110,6 @@ volumes:
   internal:
     enabled: false
     hostpath:
-      - name: humandb
-        path: /run/desktop/mnt/host/c/Users/daref/Downloads/annovar/
-        mountPath: /local/datasets
       - name: disgenet
         path: /run/desktop/mnt/host/c/Users/daref/Downloads/disgenet/
         mountPath: /local/disgenet
@@ -146,10 +143,10 @@ ingress:
 ##
 resources:
   limits:
-    cpu: 1800m
-    memory: 2000Mi
+    cpu: 1000m
+    memory: 1000Mi
   requests:
-    cpu: 1800m
-    memory: 2000Mi
+    cpu: 1000m
+    memory: 1000Mi
 
 enableInitContainers: false

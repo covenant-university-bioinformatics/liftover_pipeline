@@ -7,7 +7,7 @@ import { UserDeletedEvent } from '../events/user-delete.event';
 
 @Injectable()
 export class UserDeletedListener extends Listener<UserDeletedEvent> {
-  queueGroupName = 'jobs-service';
+  queueGroupName = 'liftover-jobs-service';
   readonly subject: Subjects.UserDeleted = Subjects.UserDeleted;
 
   @Inject(AuthService)

@@ -7,7 +7,7 @@ import { UserEmailConfirmChangeEvent } from '../dto/user-email-confirm-change.ev
 
 @Injectable()
 export class UserEmailConfirmChangeListener extends Listener<UserEmailConfirmChangeEvent> {
-  queueGroupName = 'jobs-service';
+  queueGroupName = 'liftover-jobs-service';
   readonly subject: Subjects.EmailConfirmChange = Subjects.EmailConfirmChange;
 
   @Inject(AuthService)

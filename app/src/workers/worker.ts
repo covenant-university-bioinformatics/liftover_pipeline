@@ -43,7 +43,7 @@ export default async (job: SandboxedJob) => {
   const jobParameters = getJobParameters(parameters);
   jobParameters.unshift(pathToInputFile, pathToOutputDir);
 
-  console.log(jobParameters);
+  // console.log(jobParameters);
   //make output directory
   fs.mkdirSync(pathToOutputDir, { recursive: true });
 
@@ -63,7 +63,9 @@ export default async (job: SandboxedJob) => {
     jobParameters,
     // { detached: true },
   );
-
+  console.log(jobSpawn.stdout.toString());
+  console.log("=====================================");
+  console.log(jobSpawn.stderr.toString());
   console.log(`${job.data.jobName} spawn done!`);
   return true;
 };
