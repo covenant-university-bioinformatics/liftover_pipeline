@@ -17,7 +17,7 @@ image: skafoldcfg
 imageConfig:
   repository:
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 #command: ['echo pre-install Job Pod is Running']
 

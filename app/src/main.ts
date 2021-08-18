@@ -25,7 +25,7 @@ async function bootstrap() {
   app.use(hpp());
   app.use(helmet());
   app.use(compression());
-  app.use('/api/liftover/pv/analysis', express.static('/pv/analysis'));
+  // app.use('/api/liftover/pv/analysis', express.static('/pv/analysis'));
   await app.listen(3000);
 }
 

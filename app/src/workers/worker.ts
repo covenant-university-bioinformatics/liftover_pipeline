@@ -6,7 +6,7 @@ import {
   LiftoverJobsModel,
 } from '../jobs/models/liftover.jobs.model';
 import { LiftoverDoc, LiftoverModel } from '../jobs/models/liftover.model';
-import { spawn, spawnSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import connectDB from '../mongoose';
 
 function sleep(ms) {
