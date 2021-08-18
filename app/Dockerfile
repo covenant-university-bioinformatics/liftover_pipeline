@@ -12,6 +12,8 @@ RUN npm install
 
 COPY ./ ./
 
+RUN chmod 775 pipeline_scripts/liftOver.sh
+
 RUN npm run build
 
 CMD [ "npm", "run", "start:prod" ]
