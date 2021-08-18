@@ -1,7 +1,6 @@
 import { SandboxedJob } from 'bullmq';
 import * as fs from 'fs';
 import {
-  LiftoverJobsDoc,
   JobStatus,
   LiftoverJobsModel,
 } from '../jobs/models/liftover.jobs.model';
@@ -63,9 +62,9 @@ export default async (job: SandboxedJob) => {
     jobParameters,
     // { detached: true },
   );
-  console.log(jobSpawn.stdout.toString());
+  console.log(jobSpawn?.stdout?.toString());
   console.log("=====================================");
-  console.log(jobSpawn.stderr.toString());
-  console.log(`${job.data.jobName} spawn done!`);
+  console.log(jobSpawn?.stderr?.toString());
+  console.log(`${job?.data?.jobName} spawn done!`);
   return true;
 };
