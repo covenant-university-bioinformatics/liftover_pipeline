@@ -30,7 +30,6 @@ import { writeLiftoverFile } from '../utils/validateFile';
 import { JobStatus } from './models/liftover.jobs.model';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../decorators/get-user.decorator';
-import { UserDoc } from '../auth/models/user.model';
 import { GetJobsDto } from './dto/getjobs.dto';
 
 const storageOpts = multer.diskStorage({

@@ -9,7 +9,7 @@
 ## maintainer
 ## To run it ./liftOver.sh gwas_summary NCBI_build{38/36}
 
-bin_dir="/local/datasets"
+bin_dir="/local/datasets/liftover"
 
 ##### Parameters
 gwas_summary=$1;
