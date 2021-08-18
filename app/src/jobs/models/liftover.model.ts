@@ -9,7 +9,7 @@ interface LiftoverAttrs {
 // An interface that describes the extra properties that a ticket model has
 //collection level methods
 interface LiftoverModel extends mongoose.Model<LiftoverDoc> {
-  build(attrs: LiftoverAttrs): Promise<LiftoverDoc>;
+  build(attrs: LiftoverAttrs): LiftoverDoc;
 }
 
 //An interface that describes a properties that a document has
@@ -51,8 +51,8 @@ const LiftoverSchema = new mongoose.Schema<LiftoverDoc, LiftoverModel>(
 LiftoverSchema.set('versionKey', 'version');
 
 //collection level methods
-LiftoverSchema.statics.build = async (attrs: LiftoverAttrs) => {
-  return await LiftoverModel.create(attrs);
+LiftoverSchema.statics.build = (attrs: LiftoverAttrs) => {
+  return new LiftoverModel(attrs);
 };
 
 //create mongoose model

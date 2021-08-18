@@ -23,7 +23,7 @@ interface JobsAttrs {
 // An interface that describes the extra properties that a model has
 //collection level methods
 interface JobsModel extends mongoose.Model<LiftoverJobsDoc> {
-  build(attrs: JobsAttrs): Promise<LiftoverJobsDoc>;
+  build(attrs: JobsAttrs): LiftoverJobsDoc;
 }
 
 //An interface that describes a properties that a document has
@@ -115,8 +115,8 @@ const LiftoverJobSchema = new mongoose.Schema<LiftoverJobsDoc, JobsModel>(
 );
 
 //collection level methods
-LiftoverJobSchema.statics.build = async (attrs: JobsAttrs) => {
-  return await LiftoverJobsModel.create(attrs);
+LiftoverJobSchema.statics.build = (attrs: JobsAttrs) => {
+  return new LiftoverJobsModel(attrs);
 };
 
 //Cascade delete main job parameters when job is deleted
