@@ -7,6 +7,7 @@ import {
 import { LiftoverDoc, LiftoverModel } from '../jobs/models/liftover.model';
 import { spawnSync } from 'child_process';
 import connectDB from '../mongoose';
+import { fileOrPathExists } from '../utils/utilityfunctions';
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -66,7 +67,15 @@ export default async (job: SandboxedJob) => {
   console.log(jobSpawn?.stdout?.toString());
   console.log('=====================================');
   console.log('Spawn error log');
-  console.log(jobSpawn?.stderr?.toString());
-  console.log(`${job?.data?.jobName} spawn done!`);
-  return true;
+  const error_msg = jobSpawn?.stderr?.toString();
+  console.log(error_msg);
+
+  const value = await fileOrPathExists(`${pathToOutputDir}/liftedOver.txt`);
+
+  if (value) {
+    console.log(`${job?.data?.jobName} spawn done!`);
+    return true;
+  } else {
+    throw new Error(error_msg || 'Unable to execute program');
+  }
 };
