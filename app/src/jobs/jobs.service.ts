@@ -42,7 +42,7 @@ export class JobsService {
       const optsTest = { session: sessionTest };
 
       //save job parameters, folder path, filename in database
-      const newJob = await LiftoverJobsModel.build({
+      const newJob = LiftoverJobsModel.build({
         job_name: createJobDto.job_name,
         jobUID,
         inputFile: filename,
@@ -51,7 +51,7 @@ export class JobsService {
       });
 
       //let the models be created per specific analysis
-      const liftover = await LiftoverModel.build({
+      const liftover = LiftoverModel.build({
         ncbi_build: createJobDto.ncbi_build,
         job: newJob.id,
       });

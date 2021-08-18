@@ -21,7 +21,7 @@ export class AuthService {
     try {
       const opts = { session };
 
-      const user = await User.build(newUserDto);
+      const user = User.build(newUserDto);
 
       await user.save(opts);
 
@@ -31,9 +31,9 @@ export class AuthService {
       };
     } catch (e) {
       console.log(e);
-      if (e.code === 11000) {
-        return { success: false };
-      }
+      // if (e.code === 11000) {
+      //   return { success: false };
+      // }
       await session.abortTransaction();
       // throw new HttpException(e.message, 400);
       return { success: false };
