@@ -52,7 +52,6 @@ const LiftoverJobSchema = new mongoose.Schema<LiftoverJobsDoc, JobsModel>(
 
     job_name: {
       type: String,
-      unique: true,
       required: [true, 'Please add a name'],
     },
 
