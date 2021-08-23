@@ -13,6 +13,10 @@ trap 'echo "\"${last_command}\" command failed with exit code $?." >&2' EXIT
 ## maintainer
 ## To run it ./liftOver.sh gwas_summary NCBI_build{38/36}
 
+#development
+#bin_dir="/local/datasets"
+
+#production
 bin_dir="/local/datasets/liftover"
 
 ##### Parameters
@@ -59,7 +63,7 @@ then
 echo "Here 2"
 echo $NCBI_build
 #append output dir
-$bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg18ToHg19.over.chain.gz   $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
+$bin_dir/liftOver $outputdir/dbsnp.bed $bin_dir/hg18ToHg19.over.chain.gz $outputdir/output-lifted.bed $outputdir/unlifted.bed # we report both outputs
 
 fi
 

@@ -24,9 +24,9 @@ import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import {
   deleteFileorFolder,
-  fileOrPathExists,
+  fileOrPathExists, fileSizeMb,
 } from '../utils/utilityfunctions';
-import { writeLiftoverFile } from '../utils/validateFile';
+import {fetchLines, writeLiftoverFile} from '../utils/validateFile';
 import { JobStatus } from './models/liftover.jobs.model';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../decorators/get-user.decorator';
@@ -143,24 +143,31 @@ export class JobsController {
 
   @Get('/output/:id/:file')
   async getOutput(
-    @Param('id') id: string,
-    @Param('file') file_key: string,
-    @GetUser() user,
+      @Param('id') id: string,
+      @Param('file') file_key: string,
+      @GetUser() user,
   ) {
     const job = await this.jobsService.getJobByID(id, user);
     const fileExists = await fileOrPathExists(job[file_key]);
     if (fileExists) {
       try {
-        const file = fs.createReadStream(job[file_key]);
+        const stat = await fileSizeMb(job[file_key]);
+        if (stat && stat > 2) {
+          //  get first 1000 lines
+          const lines = fetchLines(job[file_key]);
+          return lines;
+        } else {
+          const file = fs.createReadStream(job[file_key]);
 
-        return new StreamableFile(file);
+          return new StreamableFile(file);
+        }
       } catch (e) {
         console.log(e);
         throw new BadRequestException(e.message);
       }
     } else {
       throw new BadRequestException(
-        'File not available! Job probably still running or parameter not selected',
+          'File not available! Job probably still running or parameter not selected',
       );
     }
   }

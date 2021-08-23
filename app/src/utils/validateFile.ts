@@ -112,17 +112,27 @@ function doWork(wantedLines: string[]) {
 
 function detectDelimiter(filename: string): string | false {
   const firstLine = getWantedLines(filename)[0];
+  const secondLine = getWantedLines(filename)[1];
 
   let spaceLines = firstLine.split(' ');
   let tabLines = firstLine.split('\t');
   let doubleSpaceLines = firstLine.split('  ');
 
   if (spaceLines.length > 1) {
-    return ' ';
+    if (secondLine.split(' ').length > 1) {
+      return ' ';
+    }
+    throw new BadRequestException('Multiple file delimiters detected');
   } else if (tabLines.length > 1) {
-    return '\t';
+    if (secondLine.split('\t').length > 1) {
+      return '\t';
+    }
+    throw new BadRequestException('Multiple file delimiters detected');
   } else if (doubleSpaceLines.length > 1) {
-    return '  ';
+    if (secondLine.split('  ').length > 1) {
+      return '  ';
+    }
+    throw new BadRequestException('Multiple file delimiters detected');
   } else {
     return false;
   }
@@ -264,7 +274,7 @@ export function writeLiftoverFile(
     let lines = line.replace(/(\r\n|\n|\r)/gm, '');
     let lines_strings = lines.split(delimiter);
 
-    const newFileDelim = '\t';
+    const newFileDelim = ' ';
     const columnNumbers = range(0, lines_strings.length);
     const main = [
       objectColumns.chr,
@@ -276,7 +286,7 @@ export function writeLiftoverFile(
 
     if (lineCounter === 0) {
       stream.write(
-        `chr${delimiter}pos${delimiter}rsid${delimiter}${remCols
+        `chr${newFileDelim}pos${newFileDelim}rsid${newFileDelim}${remCols
           .map((value) => lines_strings[value])
           .join(newFileDelim)}\n`,
       );
@@ -305,6 +315,25 @@ function range(start: number, end: number): number[] {
     list.push(i);
   }
   return list;
+}
+
+export function fetchLines(filename: string, lines = 1000) {
+  const liner = new lineByLine(filename);
+
+  let lineCounter = 0;
+  let linesStrings = '';
+  let line;
+
+  while ((line = liner.next())) {
+    linesStrings += String(line).replace(/(\r\n|\n|\r)/gm, '') + '\n';
+    if (lineCounter === lines) {
+      break;
+    }
+
+    lineCounter++;
+  }
+
+  return linesStrings;
 }
 
 export default validateFile;
