@@ -68,3 +68,15 @@ export function fileOrPathExists(path: string): Promise<boolean> {
     });
   });
 }
+
+export function fileSizeMb(path: string): Promise<number | undefined> {
+  return new Promise((resolve) => {
+    fs.stat(path, (err, stat) => {
+      if (err) {
+        resolve(undefined);
+      }
+      const mb = stat.size / (1024 * 1024);
+      resolve(mb);
+    });
+  });
+}

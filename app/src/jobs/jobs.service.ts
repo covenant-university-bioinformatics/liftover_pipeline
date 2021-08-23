@@ -120,7 +120,8 @@ export class JobsService {
           createdAt: 1,
           unliftedFile: 1,
           outputFile: 1,
-
+          inputFile: 1,
+          failed_reason: 1,
         },
       },
       {
@@ -192,6 +193,7 @@ export class JobsService {
   }
 
   async deleteJob(id: string, user: UserDoc) {
+    console.log("Deleting...");
     const session = await LiftoverJobsModel.startSession();
     session.startTransaction();
     const opts = { session };
@@ -203,6 +205,7 @@ export class JobsService {
       }
       await job.remove(opts);
       await deleteFileorFolder(`/pv/analysis/${job.jobUID}`);
+      await session.commitTransaction();
       return {
         success: true,
       };
