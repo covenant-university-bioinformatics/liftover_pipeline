@@ -22,4 +22,4 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save k8s-1-21-2-do-2-fra-pgwas
-      - run: helm upgrade liftover ./infra/helm/ --install --wait --atomic --set image=cubrenig/pgwasliftover:$GITHUB_SHA --values=./infra/helm/micro-values.yaml
+      - run: helm upgrade liftover ./infra/helm/ --install --wait --set image=cubrenig/pgwasliftover:$GITHUB_SHA --values=./infra/helm/micro-values.yaml
