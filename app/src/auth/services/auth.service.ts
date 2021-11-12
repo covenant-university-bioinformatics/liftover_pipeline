@@ -31,11 +31,7 @@ export class AuthService {
       };
     } catch (e) {
       console.log(e);
-      // if (e.code === 11000) {
-      //   return { success: false };
-      // }
       await session.abortTransaction();
-      // throw new HttpException(e.message, 400);
       return { success: false };
     } finally {
       session.endSession();
