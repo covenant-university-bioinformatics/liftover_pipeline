@@ -6,12 +6,20 @@ WORKDIR /app
 
 COPY package.json ./
 
+#RUN npm install -g @nestjs/cli
+
 RUN npm install
 
 COPY ./ ./
 
-RUN apt update
+#add bash
+#RUN apk add --no-cache bash
+
+#remove windows line endings
+RUN apt-get update
 RUN apt-get install dos2unix
+
+#RUN apk add dos2unix
 RUN chmod 775 pipeline_scripts/liftOver.sh
 RUN dos2unix pipeline_scripts/liftOver.sh
 

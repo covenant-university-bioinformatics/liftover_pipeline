@@ -1,6 +1,6 @@
 import { Stan } from 'node-nats-streaming';
-import { Subjects } from '../events/subject';
 import { Inject, OnModuleInit } from '@nestjs/common';
+import {Subjects} from "@cubrepgwas/pgwascommon";
 
 interface Event {
   subject: Subjects;

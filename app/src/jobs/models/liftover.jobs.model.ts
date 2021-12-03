@@ -16,7 +16,8 @@ interface JobsAttrs {
   jobUID: string;
   job_name: string;
   status: JobStatus;
-  user: string;
+  user?: string;
+  email?: string;
   inputFile: string;
 }
 
@@ -33,7 +34,8 @@ export interface LiftoverJobsDoc extends mongoose.Document {
   job_name: string;
   inputFile: string;
   status: JobStatus;
-  user: UserDoc;
+  user?: UserDoc;
+  email?: string;
   outputFile: string;
   unliftedFile: string;
   failed_reason: string;
@@ -92,7 +94,10 @@ const LiftoverJobSchema = new mongoose.Schema<LiftoverJobsDoc, JobsModel>(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+    },
+    email: {
+      type: String,
+      trim: true,
     },
     version: {
       type: Number,

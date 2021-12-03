@@ -3,8 +3,7 @@ import {
   IsString,
   MaxLength,
   MinLength,
-  IsBooleanString,
-  IsBoolean,
+  IsOptional, IsEmail,
 } from 'class-validator';
 
 export class CreateJobDto {
@@ -12,6 +11,10 @@ export class CreateJobDto {
   @MinLength(5)
   @MaxLength(20)
   job_name: string;
+
+  @IsOptional()
+  @IsEmail()
+  email: string;
 
   @IsNumberString()
   marker_name: string;
