@@ -6,6 +6,8 @@ export interface WorkerJob {
   jobId: string;
   jobName: string;
   jobUID: string;
+  username: string;
+  email: string;
 }
 
 @Injectable()

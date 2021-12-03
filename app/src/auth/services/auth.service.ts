@@ -7,9 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from '../models/user.model';
-import { NewUserDto } from '../../nats/dto/new-user.dto';
-import { UserUpdatedDto } from '../../nats/dto/userUpdated.dto';
-import { UserDeletedDto } from '../../nats/dto/userDeleted.dto';
+import {NewUserDto, UserDeletedDto, UserUpdatedDto} from "@cubrepgwas/pgwascommon";
 
 @Injectable()
 export class AuthService {

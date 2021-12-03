@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            helm upgrade liftover ${{ secrets.HOME_DIR }}/files/dist/liftover/infra/helm/ --install --wait --set image=cubrenig/pgwasliftover:$GITHUB_SHA --values=${{ secrets.HOME_DIR }}/files/dist/liftover/infra/helm/micro-values.yaml
+            helm upgrade liftover ${{ secrets.HOME_DIR }}/files/dist/liftover/infra/helm/ --install --wait --set image=cubrenig/pgwasliftover:latest --values=${{ secrets.HOME_DIR }}/files/dist/liftover/infra/helm/micro-values.yaml
 
 #      - run: doctl kubernetes cluster kubeconfig save k8s-1-21-2-do-2-fra-pgwas
 #      - run: helm upgrade liftover ./infra/helm/ --install --wait --set image=cubrenig/pgwasliftover:$GITHUB_SHA --values=./infra/helm/micro-values.yaml

@@ -3,7 +3,7 @@ kind: Config
 deploy:
   helm:
     releases:
-      - name: liftover-service
+      - name: liftover
         chartPath: .\infra\helm\
         valuesFiles:
           - .\infra\helm\values.yaml

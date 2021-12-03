@@ -1,9 +1,8 @@
 import { Message } from 'node-nats-streaming';
 import { Listener } from './base-listener';
-import { Subjects } from '../events/subject';
 import { Inject, Injectable } from '@nestjs/common';
-import { UserApprovedEvent } from '../events/user-approved.event';
 import { AuthService } from '../../auth/services/auth.service';
+import {Subjects, UserApprovedEvent} from "@cubrepgwas/pgwascommon";
 
 @Injectable()
 export class UserApprovedListener extends Listener<UserApprovedEvent> {
