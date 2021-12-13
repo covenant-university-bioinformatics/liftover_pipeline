@@ -25,6 +25,10 @@ import {
   writeLiftoverFile
 } from "@cubrepgwas/pgwascommon";
 
+//production
+const testPath = '/local/datasets/pgwas_test_files/liftover/celiac_filtered.txt';
+//development
+// const testPath = '/local/datasets/data/liftover/celiac_filtered.txt';
 
 @Injectable()
 export class JobsService {
@@ -39,12 +43,14 @@ export class JobsService {
     user?: UserDoc,
   ) {
 
-    if (!file) {
-      throw new BadRequestException('Please upload a file');
-    }
+    if (createJobDto.useTest === 'false') {
+      if (!file) {
+        throw new BadRequestException('Please upload a file');
+      }
 
-    if (file.mimetype !== 'text/plain') {
-      throw new BadRequestException('Please upload a text file');
+      if (file.mimetype !== 'text/plain') {
+        throw new BadRequestException('Please upload a text file');
+      }
     }
 
     if (!user && !createJobDto.email) {
@@ -91,7 +97,13 @@ export class JobsService {
       throw new InternalServerErrorException();
     }
 
-    const filename = `/pv/analysis/${jobUID}/input/${file.filename}`;
+    let filename;
+
+    if (createJobDto.useTest === 'false') {
+      filename = `/pv/analysis/${jobUID}/input/${file.filename}`;
+    } else {
+      filename = `/pv/analysis/${jobUID}/input/test.txt`;
+    }
 
     const session = await LiftoverJobsModel.startSession();
     const sessionTest = await LiftoverModel.startSession();
@@ -103,16 +115,20 @@ export class JobsService {
       const opts = { session };
       const optsTest = { session: sessionTest };
 
+      const filepath = createJobDto.useTest === 'true' ? testPath : file.path;
+
       //write the exact columns needed by the analysis
-      writeLiftoverFile(file.path, filename, {
+      writeLiftoverFile(filepath, filename, {
         marker_name: parseInt(createJobDto.marker_name, 10) - 1,
         chr: parseInt(createJobDto.chromosome, 10) - 1,
         pos: parseInt(createJobDto.position, 10) - 1,
       });
 
-      deleteFileorFolder(file.path).then(() => {
-        // console.log('deleted');
-      });
+      if (createJobDto.useTest === 'false') {
+        deleteFileorFolder(file.path).then(() => {
+          console.log('deleted');
+        });
+      }
 
       let newJob;
 
