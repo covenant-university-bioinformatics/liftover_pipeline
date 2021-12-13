@@ -14,10 +14,10 @@ trap 'echo "\"${last_command}\" command failed with exit code $?." >&2' EXIT
 ## To run it ./liftOver.sh gwas_summary NCBI_build{38/36}
 
 #development
-#bin_dir="/local/datasets"
+bin_dir="/local/datasets"
 
 #production
-bin_dir="/local/datasets/liftover"
+#bin_dir="/local/datasets/liftover"
 
 ##### Parameters
 gwas_summary=$1;
