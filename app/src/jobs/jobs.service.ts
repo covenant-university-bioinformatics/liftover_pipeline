@@ -26,9 +26,9 @@ import {
 } from "@cubrepgwas/pgwascommon";
 
 //production
-// const testPath = '/local/datasets/pgwas_test_files/annot/ex1.txt';
+const testPath = '/local/datasets/pgwas_test_files/liftover/celiac_filtered.txt';
 //development
-const testPath = '/local/datasets/data/liftover/celiac_filtered.txt';
+// const testPath = '/local/datasets/data/liftover/celiac_filtered.txt';
 
 @Injectable()
 export class JobsService {
