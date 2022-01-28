@@ -2,7 +2,11 @@ import * as mongoose from 'mongoose';
 
 //Interface that describe the properties that are required to create a new job
 interface LiftoverAttrs {
-  ncbi_build: number;
+  useTest: string;
+  marker_name: string;
+  chromosome: string;
+  position: string;
+  ncbi_build: string;
   job: string;
 }
 
@@ -16,11 +20,31 @@ interface LiftoverModel extends mongoose.Model<LiftoverDoc> {
 export interface LiftoverDoc extends mongoose.Document {
   id: string;
   version: number;
+  useTest: boolean;
+  marker_name: number;
+  chromosome: number;
+  position: number;
   ncbi_build: number;
 }
 
 const LiftoverSchema = new mongoose.Schema<LiftoverDoc, LiftoverModel>(
   {
+    useTest: {
+      type: Boolean,
+      trim: true,
+    },
+    marker_name: {
+      type: Number,
+      trim: true,
+    },
+    chromosome: {
+      type: Number,
+      trim: true,
+    },
+    position: {
+      type: Number,
+      trim: true,
+    },
     ncbi_build: {
       type: Number,
       trim: true,

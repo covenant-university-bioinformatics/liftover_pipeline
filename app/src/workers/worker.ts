@@ -6,8 +6,8 @@ import {
 } from '../jobs/models/liftover.jobs.model';
 import { LiftoverDoc, LiftoverModel } from '../jobs/models/liftover.model';
 import { spawnSync } from 'child_process';
-import connectDB from '../mongoose';
-import {fileOrPathExists} from "@cubrepgwas/pgwascommon";
+import connectDB, {closeDB} from '../mongoose';
+import {deleteFileorFolder, fileOrPathExists, writeLiftoverFile} from "@cubrepgwas/pgwascommon";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -37,8 +37,33 @@ export default async (job: SandboxedJob) => {
 
   const jobParams = await LiftoverJobsModel.findById(job.data.jobId).exec();
 
+  //create input file and folder
+  let filename;
+
+  //extract file name
+  const name = jobParams.inputFile.split(/(\\|\/)/g).pop();
+
+  if (parameters.useTest === false) {
+    filename = `/pv/analysis/${jobParams.jobUID}/input/${name}`;
+  } else {
+    filename = `/pv/analysis/${jobParams.jobUID}/input/test.txt`;
+  }
+
+  //write the exact columns needed by the analysis
+  writeLiftoverFile(jobParams.inputFile, filename, {
+    marker_name: parameters.marker_name - 1,
+    chr: parameters.chromosome - 1,
+    pos: parameters.position - 1,
+  });
+
+  if (parameters.useTest === false) {
+    deleteFileorFolder(jobParams.inputFile).then(() => {
+      console.log('deleted');
+    });
+  }
+
   //assemble job parameters
-  const pathToInputFile = `${jobParams.inputFile}`;
+  const pathToInputFile = filename;
   const pathToOutputDir = `/pv/analysis/${job.data.jobUID}/liftover/output`;
   const jobParameters = getJobParameters(parameters);
   jobParameters.unshift(pathToInputFile, pathToOutputDir);
@@ -57,6 +82,7 @@ export default async (job: SandboxedJob) => {
   );
 
   //spawn process
+  await sleep(3000);
   const start = Date.now();
   const jobSpawn = spawnSync(
     './pipeline_scripts/liftOver.sh',
@@ -71,6 +97,8 @@ export default async (job: SandboxedJob) => {
   console.log(error_msg);
 
   const value = await fileOrPathExists(`${pathToOutputDir}/liftedOver.txt`);
+
+  closeDB();
 
   if (value) {
     console.log(`${job?.data?.jobName} spawn done!`);

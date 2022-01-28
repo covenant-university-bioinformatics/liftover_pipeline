@@ -29,5 +29,5 @@ export class CreateJobDto {
   position: string;
 
   @IsNumberString()
-  ncbi_build: number;
+  ncbi_build: string;
 }
